@@ -1,0 +1,27 @@
+alias hso cd ~/work/customer/software/HiSTBAndroidV500R001C00SPC032/out/target/product/Hi3716CV200ES
+alias hss cd ~/work/customer/software/HiSTBAndroidV500R001C00SPC032/device/hisilicon/bigfish/sdk/source
+alias hsr cd ~/work/customer/software/HiSTBAndroidV500R001C00SPC032
+alias cwhos grep -R $1 $2 $3 $4 $5 $6 $7 $8 $9 . --include=*.[ch] --include=*.cpp --include=*.in[cl] --include=*.[Ss] --include=*.ld[s] --include=*.mk
+alias editor-backup tar jcf editor-setting.tar.bz2 .emacs.d/ .eshell/ .vim/ .bash_profile .bashrc .emacs .tmux.conf .toprc .vimrc .viper
+alias where find -L . -name $1
+alias syncpath setq eshell-path-env $PATH
+alias tg-tags etags --extra=+q --fields=+fksaiS --c++-kinds=+px --append -L cscope.files
+alias mklist find -P $1 $2 $3 $4 $5 $6 $7 $8 $9 \( -iname "*.[chs]" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.[ch]xx" -o -iname "*.in[cl]" -o -iname "*.ld*" -o -iname "*.cdl" -o -iname "*make*" -o -iname "*config*" \) -type f -fprintf cscope.files "\"%p\"\n"
+alias whos grep -I -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
+alias whosw grep -Iw -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
+alias whosiw grep -Iiw -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
+alias whosi grep -Ii -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
+alias l. ls -d .*
+alias ls ls -F --color $1 $2 $3 $4 $5 $6 $7 $8 $9
+alias mkcd mkdir $1; cd $1
+alias diff diff -u $*
+alias rm rm -i $1 $2 $3 $4 $5 $6 $7 $8 $9
+alias mv mv -i $1 $2 $3 $4 $5 $6 $7 $8 $9
+alias cp cp -i $1 $2 $3 $4 $5 $6 $7 $8 $9
+alias less echo ">> Do not use less. Use cat instead. <<"
+alias more echo ">> Do not use more. Use cat instead. <<"
+alias emacs echo ">> You are already in Emacs. Use find-file to edit the file. <<"
+alias vi echo ">> Do not use vi. Use find-file instead. <<"
+alias he find-file $1
+alias view find-file-read-only $1
+alias ks SRCARCH=arm scripts/tags.sh cscope

@@ -1,0 +1,3 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_1='/home/user/perforce/THEALE/Uranus/Kaiser/DDI_Package/ddi_pkg_linux/bsp/linux/tftp_root_emmc'
