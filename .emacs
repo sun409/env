@@ -63,6 +63,8 @@
 
 (setq line-number-mode t)
 
+(auto-fill-mode -1)
+
 (setq system-time-locale "C")
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
@@ -141,15 +143,6 @@ If point was already at that position, move point to beginning of line."
 
 
 
-
-
-;; Enable font lock mode
-;;  except shell-mode and text-mode
-;; (setq font-lock-maximum-decoration t)
-;; (setq font-lock-global-modes '(not shell-mode text-mode))
-;; (setq font-lock-verbose t)
-;; (setq font-lock-maximum-size '((t . 1048576) (vm-mode . 5250000)))
-;; (setq global-font-lock-mode t)
 
 
 
