@@ -1,30 +1,31 @@
-alias qq winexe -A ~/.credentials.cfg //172.23.36.10 "C:\\Users\\tim.ouyang\\qq.bat"
-alias whosw grep -Iw -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
-alias whosiw grep -Iiw -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
-alias whosi grep -Ii -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
-alias whos grep -I -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
-alias where find -L . -name $1
-alias view find-file-read-only $1
-alias vi echo ">> Do not use vi. Use find-file instead. <<"
-alias tg-tags etags --extra=+q --fields=+fksaiS --c++-kinds=+px --append -L cscope.files
-alias syncpath setq eshell-path-env $PATH
-alias rm rm -i $1 $2 $3 $4 $5 $6 $7 $8 $9
-alias mv mv -i $1 $2 $3 $4 $5 $6 $7 $8 $9
-alias more echo ">> Do not use more. Use cat instead. <<"
-alias mklist find -P $1 $2 $3 $4 $5 $6 $7 $8 $9 \( -iname "*.[chs]" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.[ch]xx" -o -iname "*.in[cl]" -o -iname "*.ld*" -o -iname "*.cdl" -o -iname "*make*" -o -iname "*config*" \) -type f -fprintf cscope.files "\"%p\"\n"
-alias mkcd mkdir $1; cd $1
-alias ls ls -F --color $1 $2 $3 $4 $5 $6 $7 $8 $9
-alias l. ls -d .*
-alias less echo ">> Do not use less. Use cat instead. <<"
-alias ks SRCARCH=arm scripts/tags.sh cscope
-alias hss cd $WORK/device/hisilicon/bigfish/sdk/source
-alias hsr cd $WORK
-alias hso cd $WORK/out/target/product/Hi3716CV200
-alias hsk cd $WORK/device/hisilicon/bigfish/sdk/source/kernel/linux-3.*.y
-alias hsb cd $WORK/device/hisilicon/bigfish/sdk/source/boot/fastboot
-alias he find-file $1
-alias emacs echo ">> You are already in Emacs. Use find-file to edit the file. <<"
-alias editor-backup tar jcf editor-setting.tar.bz2 .emacs.d/ .eshell/ .vim/ .bash_profile .bashrc .emacs .tmux.conf .toprc .vimrc .viper
-alias diff diff -Bwprd -U 10 --unidirectional-new-file $*
-alias cwhos grep -R $1 $2 $3 $4 $5 $6 $7 $8 $9 . --include=*.[ch] --include=*.cpp --include=*.in[cl] --include=*.[Ss] --include=*.ld[s] --include=*.mk
+alias ls ls -F $1 $2 $3 $4 $5 $6 $7 $8 $9
+alias csup cscope -bkqU
 alias cp cp -i $1 $2 $3 $4 $5 $6 $7 $8 $9
+alias cwhos grep -R $1 $2 $3 $4 $5 $6 $7 $8 $9 . --include=*.[ch] --include=*.cpp --include=*.in[cl] --include=*.[Ss] --include=*.ld[s] --include=*.mk
+alias diff diff -Bwprd -U 10 --unidirectional-new-file $*
+alias editor-backup tar jcf editor-setting.tar.bz2 .emacs.d/ .eshell/ .vim/ .bash_profile .bashrc .emacs .tmux.conf .toprc .vimrc .viper
+alias emacs echo ">> You are already in Emacs. Use find-file to edit the file. <<"
+alias he find-file $1
+alias hsb cd $WORK/device/hisilicon/bigfish/sdk/source/boot/fastboot
+alias hsk cd $WORK/device/hisilicon/bigfish/sdk/source/kernel/linux-3.*.y
+alias hso cd $WORK/out/target/product/Hi3716CV200
+alias hsr cd $WORK
+alias hss cd $WORK/device/hisilicon/bigfish/sdk/source
+alias ks SRCARCH=arm scripts/tags.sh cscope
+alias less echo ">> Do not use less. Use cat instead. <<"
+alias l. ls -d .*
+alias mkcd mkdir $1; cd $1
+alias mklist find -P $1 $2 $3 $4 $5 $6 $7 $8 $9 \( -iname "*.[chs]" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.[ch]xx" -o -iname "*.in[cl]" -o -iname "*.ld*" -o -iname "*.cdl" -o -iname "*make*" -o -iname "*config*" \) -type f -fprintf cscope.files "\"%p\"\n"
+alias more echo ">> Do not use more. Use cat instead. <<"
+alias mv mv -i $1 $2 $3 $4 $5 $6 $7 $8 $9
+alias rm rm -i $1 $2 $3 $4 $5 $6 $7 $8 $9
+alias syncpath setq eshell-path-env $PATH
+alias tg-tags etags --extra=+q --fields=+fksaiS --c++-kinds=+px --append -L cscope.files
+alias vi echo ">> Do not use vi. Use find-file instead. <<"
+alias view find-file-read-only $1
+alias where find -L . -name $1
+alias whos grep -I -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
+alias whosi grep -Ii -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
+alias whosiw grep -Iiw -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
+alias whosw grep -Iw -R . --exclude-dir=.svn --exclude-dir=.git --exclude=cscope.out\* --exclude=cscope.files -e $1
+alias qq winexe -A ~/.credentials.cfg //172.23.36.10 "C:\\Users\\tim.ouyang\\qq.bat"

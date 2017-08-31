@@ -1,11 +1,13 @@
 # cscope database update
 csup()
 {
+    echo "Updating cscope database ..."
     cscope -bkqU
 }
 
 mklist()
 {
+    echo "Generating file list ..."
 	#find -L . \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) -type f -fprintf cscope.files "\"%p\"\n"
 	find -H . \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) \( ! -type l -a -type f \) -fprintf cscope.files "\"%p\"\n"
 
@@ -15,10 +17,23 @@ mklist()
 		\mv qq cscope.files
 	done
 
-	for i in arch/arm/mach-* arch/arm/plat-*
-	do
-		echo $i
-	done | grep -v sphe3502 > qq
+    if [ -e arch/arm/mach-sphe3532/ ]
+    then
+        echo "    SPHE3502 related directory found"
+        for i in arch/arm/mach-* arch/arm/plat-*
+        do
+	    	echo $i
+        done | grep -v sphe3502 > qq
+    elif [ -e arch/arm/mach-gemini/ ]
+    then
+        echo "    SPHE8388 related directory found"
+        for i in arch/arm/mach-* arch/arm/plat-*
+        do
+	    	echo $i
+        done | grep -v gemini > qq
+    else
+        touch qq
+    fi
 
 	for i in `cat qq`
 	do
@@ -33,6 +48,11 @@ mklist()
 csmk()
 {
     mklist
+}
+
+csrm()
+{
+    \rm -f cscope.files cscope.in.out cscope.out cscope.po.out
 }
 
 workenv()
@@ -90,5 +110,20 @@ workenv()
 
 		cd $orig_dir
 	fi
+}
+
+c83()
+{
+    cd ~/master/8388/sphe8388/
+}
+
+c87()
+{
+    cd ~/master/8700/android/
+}
+
+c67()
+{
+    cd ~/master/6700/
 }
 
