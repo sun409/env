@@ -1,9 +1,12 @@
 ;;==============================================================================
+;; Modify ~/tools/share/emacs/24.3/etc/themes/misterioso-theme.el
+;; to change background to "color-235"
+;;==============================================================================
 
 
 
 
-(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 
 
 
@@ -29,6 +32,16 @@
 
 
 
+;; highlight current line globally
+(global-hl-line-mode)
+(make-variable-buffer-local 'global-hl-line-mode)
+(add-hook 'eshell-mode-hook (lambda () (setq global-hl-line-mode nil)))
+(global-set-key [f5] 'hl-line-mode)
+
+
+
+
+
 (global-set-key [(meta g)] 'goto-line)
 (global-set-key [home] 'smart-beginning-of-line)
 (global-set-key [select] 'end-of-line)
@@ -37,6 +50,7 @@
 (global-set-key (kbd "C-SPC") 'nil)
 (global-set-key (kbd "M-<SPC>") 'set-mark-command)
 
+(global-set-key "\C-xc" 'compile)
 
 
 
@@ -54,16 +68,15 @@
 
 ;; global behaviour related
 (menu-bar-mode 0)
-(tool-bar-mode 0)
+;; (tool-bar-mode 0)
 (display-time-mode 1)
 ;; (set-scroll-bar-mode 'right)
-(set-scroll-bar-mode 'left)
+;; (set-scroll-bar-mode 'left)
 
 (xterm-mouse-mode 1)
 
 (setq line-number-mode t)
-
-(auto-fill-mode -1)
+(setq column-number-mode t)
 
 (setq system-time-locale "C")
 (setq display-time-24hr-format t)
@@ -80,16 +93,19 @@
 
 (setq kill-ring-max 200)
 
-(setq default-fill-column 80)
+(setq default-fill-column 200)
+
+(auto-fill-mode -1)
 
 (setq enable-recursive-minibuffers t)
 
-(prefer-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
+;; (prefer-coding-system 'utf-8)
+;; (setq coding-system-for-read 'utf-8)
+;; (setq coding-system-for-write 'utf-8)
 
 ;; prevent scroll till 3 lines
 (setq scroll-margin 3)
+(setq scroll-margin 1)
 (setq scroll-conservatively 10000)
 
 (setq default-major-mode 'text-mode)
@@ -176,12 +192,7 @@ If point was already at that position, move point to beginning of line."
 (add-hook 'c-mode-common-hook
 	  '(lambda()
 	     (c-set-style "K&R")
-	     (hl-line-mode t)
 	     (setq c-basic-offset 8)))
-
-(add-hook 'asm-mode-hook
-	  '(lambda()
-	     (hl-line-mode t)))
 
 (require 'google-c-style)
 
@@ -192,12 +203,27 @@ If point was already at that position, move point to beginning of line."
   (c-set-style "K&R")
   (setq c-basic-offset 8))
 
-(load "~/.emacs.d/xcscope.el")
+(load "xcscope.el")
 (setq cscope-do-not-update-database t)
 
 ;; auto detect indent by space or tab, 4 or 8
 (require 'dtrt-indent)
 (dtrt-indent-mode 1)
+
+(defun toggle-tab-between-8-4()
+  (interactive)
+  (setq tab-width (if (= tab-width 8) 4 8))
+  (redraw-display))
+
+(global-set-key [f8] 'toggle-tab-between-8-4)
+
+
+
+
+
+(add-to-list 'load-path "~/.emacs.d/icicles/")
+(require 'icicles)
+(icy-mode 1)
 
 
 
@@ -246,8 +272,9 @@ If point was already at that position, move point to beginning of line."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(display-time-mode t)
- '(font-use-system-font t)
+ '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -1,41 +1,71 @@
+################################################
+
+export TZ="Asia/Taipei"
+export DATE='date +%Y%m%d-%H%M%S'
+
+export LANG=C
+# export LANG=en_US.utf8
+# export LANG=zh_CN.gb18030
+
+export LD_LIBRARY_PATH=${HOME}/tools/lib
+
+alias makej='make -j $((`grep processor /proc/cpuinfo | wc -l` * 3 / 2))'
+
+resetpath()
+{
+	# My tools first
+	PATH=${HOME}/tools/bin
+	# Add Java
+	PATH=${PATH}:/usr/lib/jvm/java-6-sun/bin
+	# Add HiSilicon tools
+	PATH=${PATH}:/home/root/bin/x86-arm/arm-hisiv200-linux/target/bin
+	# Add system tools
+	PATH=${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+    PATH=${PATH}:/opt/arm-2010q1/bin:${HOME}/arm-linux-androideabi-4.8/bin
+
+	export PATH
+}
+resetpath
+
+### Global commands
+
 alias where='find . -name'
+alias subd='find . -type d -name'
 # alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 alias which='alias | /usr/bin/which -a'
 alias whos='grep -R . -I -e '
 alias whosw='grep -Rw . -I -e '
 
+alias diff='diff -Bwprd -U 10 --unidirectional-new-file'
+
 alias cd='cd -P'
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
+alias ..='cd ..'
+
+# he()
+# {
+# 	if [ "$1" = "" ]
+# 	then
+# 		emacsclient -t -e '(switch-to-buffer "1shell")'
+# 	else
+# 		emacsclient -a emacs $1 $2 $3 $4
+# 	fi
+# }
 
 alias he='emacs -nw'
-alias hx='emacs > /dev/null 2>&1 &'
-alias vi='nano'
+alias emacs='emacs -nw'
 
-mklist()
+proxy()
 {
-	orig_dir=$PWD
-	if [ "$1" = "" ]
-	then
-		cd .
-	else
-		cd $1
-	fi
-	echo "Generating list..."
-	# find -L $PWD \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) -type f -fprintf $orig_dir/cscope.files "\"%p\"\n"
-	find -L $PWD \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) -type f -fprintf $orig_dir/cscope.files "\"%p\"\n"
-
-	cd $orig_dir
-
-	# If $2 is not empty, generate list only
-	if [ "$2" = "" ]
-	then
-		# echo "Generating tags..."
-		# ctags -L cscope.files
-		echo "Generating cscope..."
-		cscope -bkqu -i cscope.files
-	fi
+	export http_proxy=http://o00244801:$1@proxyus2.huawei.com:8080/
+	export https_proxy=$http_proxy
+	export HTTPS_PROXY=$http_proxy
+	export ALL_PROXY=$http_proxy
+	git config --global http.proxy $http_proxy
+	git config --global core.gitproxy $http_proxy
 }
 
 cwhos()
@@ -46,24 +76,15 @@ cwhos()
 envbak()
 {
 	pushd ~
-	tar --exclude=.emacs.d/backup/* -acf .backup/env-`date +%Y%m%d`.tar.bz2 .bashrc .emacs .emacs.d/ .profile .shenv .tmux.conf .toprc .vim/ .vimrc .nanorc
+    mkdir .backup
+	tar --exclude=.emacs.d/backup/* --exclude=.emacs.d/eshell/[hl]* --exclude=.emacs.d/auto-save-list/* --exclude=.emacs.d/\#* -acf .backup/env-`date +%Y%m%d`.tar.bz2 .bashrc .emacs .emacs.d/ .profile .shenv .workenv .tmux.conf .toprc .vim/ .vimrc .nanorc
 	popd
 }
 
-export TZ="Asia/Taipei"
-export DATE='date +%Y%m%d-%H%M%S'
-export DIFF='diff -Bbwprd -U 10 --unidirectional-new-file'
+################################################
 
-alias hsr='cd ~/work/customer/software/HiSTBAndroidV500R001C00SPC032'
-alias hss='cd ~/work/customer/software/HiSTBAndroidV500R001C00SPC032/device/hisilicon/bigfish/sdk/source'
-alias hso='cd ~/work/customer/software/HiSTBAndroidV500R001C00SPC032/out/target/product/Hi3716CV200ES'
-alias hsk='cd ~/work/customer/software/HiSTBAndroidV500R001C00SPC032/device/hisilicon/bigfish/sdk/source/kernel/linux-3.4.y'
-alias hsd='cd ~/work/customer/software/HiSTBAndroidV500R001C00SPC032/device/hisilicon/bigfish/prebuilts/ThirdPartyApplications'
+if [ -f ~/.workenv ]; then
+	. ~/.workenv
+fi
 
-resetpath()
-{
-	export PATH=/home/timouyang/tools/bin:/usr/lib/jvm/java-6-sun/bin:/home/timouyang/work/customer/software/HiSTBAndroidV500R001C00SPC032/out/host/linux-x86/bin:/home/timouyang/work/customer/software/HiSTBAndroidV500R001C00SPC032/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.6/bin:/home/timouyang/work/customer/software/HiSTBAndroidV500R001C00SPC032/prebuilts/gcc/linux-x86/mips/mipsel-linux-android-4.6/bin:/home/timouyang/work/customer/software/HiSTBAndroidV500R001C00SPC032/development/emulator/qtools:/home/timouyang/work/customer/software/HiSTBAndroidV500R001C00SPC032/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin:/home/timouyang/work/customer/software/HiSTBAndroidV500R001C00SPC032/development/scripts:/home/root/bin/x86-arm/arm-hisiv200-linux/target/bin:/usr/lib/jvm/java-6-sun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
-}
-
-export LANG=C
-
+################################################
