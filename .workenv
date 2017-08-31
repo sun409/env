@@ -1,0 +1,94 @@
+# cscope database update
+csup()
+{
+    cscope -bkqU
+}
+
+mklist()
+{
+	#find -L . \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) -type f -fprintf cscope.files "\"%p\"\n"
+	find -H . \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) \( ! -type l -a -type f \) -fprintf cscope.files "\"%p\"\n"
+
+	for i in alpha avr32 blackfin c6x cris frv h8300 hexagon ia64 m32r m68k microblaze mips mn10300 openrisc parisc powerpc s390 score sh sparc tile um unicore32 x86 xtensa
+	do
+		grep -v /arch/$i/ cscope.files > qq
+		\mv qq cscope.files
+	done
+
+	for i in arch/arm/mach-* arch/arm/plat-*
+	do
+		echo $i
+	done | grep -v sphe3502 > qq
+
+	for i in `cat qq`
+	do
+		grep -v $i cscope.files > zz
+		\mv zz cscope.files
+	done && \rm qq
+
+	csup
+}
+
+# cscope database generate
+csmk()
+{
+    mklist
+}
+
+workenv()
+{
+	if [ "$1" = "" ]
+	then
+		echo "ERROR: Should give me the path of the working directory"
+	else
+		export WORK=$1
+		alias hsr="cd ${WORK}"
+		alias hss="cd ${WORK}/device/hisilicon/bigfish/sdk/source"
+		alias hsk="cd ${WORK}/device/hisilicon/bigfish/sdk/source/kernel/linux-3.*.y"
+		alias hsb="cd ${WORK}/device/hisilicon/bigfish/sdk/source/boot/fastboot"
+		alias hsd="cd ${WORK}/device/hisilicon/bigfish/prebuilts/ThirdPartyApplications"
+		alias hso="cd ${WORK}/out/target/product/Hi3716CV200"
+
+		# Reset the path to the original one
+		resetpath
+
+		PATH=${PATH}:${WORK}/out/host/linux-x86/bin
+		PATH=${PATH}:${WORK}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.6/bin
+		PATH=${PATH}:${WORK}/prebuilts/gcc/linux-x86/mips/mipsel-linux-android-4.6/bin
+		PATH=${PATH}:${WORK}/development/emulator/qtools
+		PATH=${PATH}:${WORK}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin
+		PATH=${PATH}:${WORK}/development/scripts
+		export PATH
+
+		# Generating cscope files
+		orig_dir=$PWD
+		cd ${WORK}/device/hisilicon/bigfish/sdk/source/kernel/linux-3.*.y
+
+		for i in common msp
+		do
+			unlink drivers/$i
+			ln -s ../../../$i/drv drivers/$i
+		done
+		cd ..
+
+		mklist
+
+		# Remove arch/*/ except arm
+		for i in `ls -d linux-3.*.y/arch/*/ | grep -wv arm`
+		do
+			grep -v $i cscope.files > cscope.files.qq
+			\mv cscope.files.qq cscope.files
+		done
+
+		# Remove mach-* and plat-* except s40
+		for i in `ls -d linux-3.*.y/arch/arm/{mach,plat}-*/ | grep -v s40`
+		do
+			grep -v $i cscope.files > cscope.files.qq
+			\mv cscope.files.qq cscope.files
+		done
+		# perl -pe "s,${WORK}/device/hisilicon/bigfish/sdk/source/kernel/,," cscope.files > cscope.files.qq
+
+		cd $orig_dir
+	fi
+}
+
