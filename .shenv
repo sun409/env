@@ -9,7 +9,7 @@ export LANG=C
 
 export LD_LIBRARY_PATH=${HOME}/tools/lib
 
-alias makej='make -j $((`grep processor /proc/cpuinfo | wc -l` * 3 / 2))'
+################################################
 
 resetpath()
 {
@@ -34,10 +34,11 @@ alias where='find . -name'
 alias subd='find . -type d -name'
 # alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 alias which='alias | /usr/bin/which -a'
-alias whos='grep -R . -I -e '
-alias whosw='grep -Rw . -I -e '
+# alias whos='grep -R . -I -e '
+# alias whosw='grep -Rw . -I -e '
 
 alias diff='diff -Bwprd -U 10 --unidirectional-new-file'
+alias makej='make -j $((`grep processor /proc/cpuinfo | wc -l` * 3 / 2))'
 
 alias cd='cd -P'
 alias cp='cp -i'
@@ -45,18 +46,10 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias ..='cd ..'
 
-# he()
-# {
-# 	if [ "$1" = "" ]
-# 	then
-# 		emacsclient -t -e '(switch-to-buffer "1shell")'
-# 	else
-# 		emacsclient -a emacs $1 $2 $3 $4
-# 	fi
-# }
-
 alias he='emacs -nw'
 alias emacs='emacs -nw'
+
+################################################
 
 proxy()
 {
@@ -66,6 +59,16 @@ proxy()
 	export ALL_PROXY=$http_proxy
 	git config --global http.proxy $http_proxy
 	git config --global core.gitproxy $http_proxy
+}
+
+whos()
+{
+    find . -name .git -prune -o -type f -a -exec grep -H -I $1 '{}' \;
+}
+
+whosw()
+{
+    find . -name .git -prune -o -type f -a -exec grep -H -I -w $1 '{}' \;
 }
 
 cwhos()
@@ -86,5 +89,8 @@ envbak()
 if [ -f ~/.workenv ]; then
 	. ~/.workenv
 fi
+
+# Get rid of accidentally Ctrl-S & Ctrl-Q
+stty -ixon
 
 ################################################
