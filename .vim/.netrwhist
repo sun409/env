@@ -1,5 +1,11 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_cnt =9
 let g:netrw_dirhist_1='/home/user/perforce/THEALE/Uranus/Kaiser/DDI_Package/ddi_pkg_linux/bsp/linux/tftp_root_emmc'
 let g:netrw_dirhist_2='/home/timouyang/master/8388/sphe8388/boot/uboot/board/sunplus/gemini_platform_sdk'
 let g:netrw_dirhist_3='/home/timouyang/master/8388/sphe8388/build/platform_cfg/8388_platform_sdk_cfg'
+let g:netrw_dirhist_4='/home/timouyang/master/8388/sphe8388/boot/uboot/board/sunplus/gemini'
+let g:netrw_dirhist_5='/home/timouyang/work/letv/boot/xboot'
+let g:netrw_dirhist_6='/home/timouyang/work/letv/boot/uboot/common'
+let g:netrw_dirhist_7='/home/timouyang/master/8388/letv/build/platform_cfg/8388_sunplus_demo_cfg'
+let g:netrw_dirhist_8='/home/timouyang/master/8388/letv/boot/xboot'
+let g:netrw_dirhist_9='/home/timouyang/master/8388/sphe8388/build'

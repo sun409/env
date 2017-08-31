@@ -1,6 +1,7 @@
-set tabstop=4
-set shiftwidth=4
-set expandtab
+"set tabstop=4
+"set shiftwidth=4
+"set expandtab
+
 "set autoindent
 set cindent
 set cinoptions=g0,t0
