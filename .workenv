@@ -7,39 +7,43 @@ csup()
 
 mklist()
 {
-    echo "Generating file list ..."
+	echo "Generating file list ..."
 	#find -L . \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) -type f -fprintf cscope.files "\"%p\"\n"
-	find -H . \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) \( ! -type l -a -type f \) -fprintf cscope.files "\"%p\"\n"
+	find -H . \( -name "*.[chS]" -o -name "*.cpp" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) \( ! -type l -a -type f \) -fprintf cscope.files "\"%p\"\n"
 
-	for i in alpha avr32 blackfin c6x cris frv h8300 hexagon ia64 m32r m68k microblaze mips mn10300 openrisc parisc powerpc s390 score sh sparc tile um unicore32 x86 xtensa
-	do
-		grep -v /arch/$i/ cscope.files > qq
-		\mv qq cscope.files
-	done
+	if [ -e arch/arm -a -e Kconfig -a kernel/fork.c ]
+	then
+		echo "    Linux kernel source. Removing directories except arch/arm"
+		for i in alpha arc arm64 avr32 blackfin c6x cris frv h8300 hexagon ia64 m32r m68k metag microblaze mips mn10300 openrisc parisc powerpc s390 score sh sparc tile um unicore32 x86 xtensa
+		do
+			grep -v /arch/$i/ cscope.files > qq
+			\mv qq cscope.files
+		done
+	fi
 
-    if [ -e arch/arm/mach-sphe3532/ ]
-    then
-        echo "    SPHE3502 related directory found"
-        for i in arch/arm/mach-* arch/arm/plat-*
-        do
-	    	echo $i
-        done | grep -v sphe3502 > qq
-    elif [ -e arch/arm/mach-gemini/ ]
-    then
-        echo "    SPHE8388 related directory found"
-        for i in arch/arm/mach-* arch/arm/plat-*
-        do
-	    	echo $i
-        done | grep -v gemini > qq
-    else
-        touch qq
-    fi
+	# if [ -e arch/arm/mach-sphe3502/ ]
+	# then
+	# 	echo "    SPHE3502 related directory found"
+	# 	for i in arch/arm/mach-* arch/arm/plat-*
+	# 	do
+	# 		echo $i
+	# 	done | grep -v sphe3502 > qq
+	# elif [ -e arch/arm/mach-gemini/ ]
+	# then
+	# 	echo "    SPHE8388 related directory found"
+	# 	for i in arch/arm/mach-* arch/arm/plat-*
+	# 	do
+	# 		echo $i
+	# 	done | grep -v gemini > qq
+	# else
+	# 	touch qq
+	# fi
 
-	for i in `cat qq`
-	do
-		grep -v $i cscope.files > zz
-		\mv zz cscope.files
-	done && \rm qq
+	# for i in `cat qq`
+	# do
+	# 	grep -v $i cscope.files > zz
+	# 	\mv zz cscope.files
+	# done && \rm qq
 
 	csup
 }
@@ -114,16 +118,15 @@ workenv()
 
 c83()
 {
-    cd ~/master/8388/sphe8388/
+	cd ~/master/8388/sphe8388/
 }
 
 c87()
 {
-    cd ~/master/8700/android/
+	cd ~/master/8700/android/
 }
 
 c67()
 {
-    cd ~/master/6700/
+	cd ~/master/6700/
 }
-
