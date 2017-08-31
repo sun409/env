@@ -17,12 +17,18 @@ resetpath()
 	PATH=${HOME}/tools/bin
 	# Add Java
 	PATH=${PATH}:/usr/lib/jvm/java-6-sun/bin
+	# Add ARM MUSL toolchain
+	PATH=${PATH}:${HOME}/arm-linux-musleabihf/bin
+	# Add Linaro ARM toolchain
+	PATH=${PATH}:${HOME}/gcc-linaro-5.3-2016.02-x86_64_arm-linux-gnueabi/bin
 	# Add HiSilicon tools
-	PATH=${PATH}:/home/root/bin/x86-arm/arm-hisiv200-linux/target/bin
+	# PATH=${PATH}:/home/root/bin/x86-arm/arm-hisiv200-linux/target/bin
+	# Add my ARM toolchain
+	# PATH=${PATH}:${HOME}/arm-2014.05/bin
 	# Add system tools
 	PATH=${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
-
-    PATH=${PATH}:/opt/arm-2010q1/bin:${HOME}/arm-linux-androideabi-4.8/bin
+	# Add Sunplus ARM toolchain
+	PATH=${PATH}:/opt/arm-2010q1/bin:/opt/coverity/cov-analysis-linux64-8.0.0/bin
 
 	export PATH
 }
@@ -63,30 +69,56 @@ proxy()
 
 whos()
 {
-    find . -name .git -prune -o -iname cscope.\* -prune -o -type f -a -exec grep -H -I $1 $2 $3 $4 $5 $6 $7 $8 $9 '{}' \;
+	find . -name .git -prune -o -iname cscope.\* -prune -o -type f -a -exec grep -H -I "$1" $2 $3 $4 $5 $6 $7 $8 $9 '{}' \;
 }
 
 whosw()
 {
-    find . -name .git -prune -o -iname cscope.\* -prune -o -type f -a -exec grep -H -I -w $1 $2 $3 $4 $5 $6 $7 $8 $9 '{}' \;
+	find . -name .git -prune -o -iname cscope.\* -prune -o -type f -a -exec grep -H -I -w "$1" $2 $3 $4 $5 $6 $7 $8 $9 '{}' \;
 }
 
 cwhos()
 {
-	find . \( -name \*.[chS] -o -name \*.[ch]pp \) -a -exec grep -H $1 $2 $3 $4 $5 $6 $7 $8 $9 \{\} \;
+	find . \( -name \*.[chS] -o -name \*.[ch]pp \) -a -exec grep -H -I "$1" $2 $3 $4 $5 $6 $7 $8 $9 \{\} \;
 }
 
 cwhosw()
 {
-	find . \( -name \*.[chS] -o -name \*.[ch]pp \) -a -exec grep -H -w $1 $2 $3 $4 $5 $6 $7 $8 $9 \{\} \;
+	find . \( -name \*.[chS] -o -name \*.[ch]pp \) -a -exec grep -H -I -w "$1" $2 $3 $4 $5 $6 $7 $8 $9 \{\} \;
 }
 
 envbak()
 {
 	pushd ~
-    mkdir .backup
+	mkdir .backup
 	tar --exclude=.emacs.d/backup/* --exclude=.emacs.d/eshell/[hl]* --exclude=.emacs.d/auto-save-list/* --exclude=.emacs.d/\#* -acf .backup/env-`date +%Y%m%d`.tar.bz2 .bashrc .emacs .emacs.d/ .profile .shenv .workenv .tmux.conf .toprc .vim/ .vimrc .nanorc
 	popd
+}
+
+function max_bg_procs
+{
+	# Usage example:
+	# for x in $(seq 1 100)		# 100 things we want to put into the background.
+	# do
+	#	max_bg_procs 5		# Define the limit. See below.
+	#	your_intensive_job &
+	# done
+	if [[ $# -eq 0 ]]
+	then
+		echo "Usage: max_bg_procs NUM_PROCS.  Will wait until the number of background (&)"
+		echo "           bash processes (as determined by 'jobs -pr') falls below NUM_PROCS"
+		return
+	fi
+	local max_number=$((0 + ${1:-0}))
+	while true
+	do
+		local current_number=$(jobs -pr | wc -l)
+		if [[ $current_number -lt $max_number ]]
+		then
+			break
+		fi
+		sleep 1
+	done
 }
 
 ################################################
@@ -97,5 +129,15 @@ fi
 
 # Get rid of accidentally Ctrl-S & Ctrl-Q
 stty -ixon
+
+################################################
+
+case "$TERM" in
+xterm*|rxvt*)
+	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;36m\]\u\[\033[01;35m\]@\h\[\033[01;34m\]@\t\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+	;;
+*)
+	;;
+esac
 
 ################################################
