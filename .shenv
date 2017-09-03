@@ -90,8 +90,8 @@ cwhosw()
 envbak()
 {
 	pushd ~
-	mkdir .backup
-	tar --exclude=.emacs.d/backup/* --exclude=.emacs.d/eshell/[hl]* --exclude=.emacs.d/auto-save-list/* --exclude=.emacs.d/\#* -acf .backup/env-`date +%Y%m%d`.tar.bz2 .bashrc .emacs .emacs.d/ .profile .shenv .workenv .tmux.conf .toprc .vim/ .vimrc .nanorc
+	mkdir -p .backup
+	tar --exclude=.emacs.d/backup/* --exclude=.emacs.d/eshell/[hl]* --exclude=.emacs.d/auto-save-list/* --exclude=.emacs.d/\#* -acf .backup/env-`date +%Y%m%d`.tar.bz2 .bashrc .clang-format .emacs .emacs.d/ .profile .shenv .workenv .tmux.conf .toprc .vim/ .vimrc .nanorc
 	popd
 }
 

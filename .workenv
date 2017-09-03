@@ -1,23 +1,32 @@
 # cscope database update
 csup()
 {
-    echo "Updating cscope database ..."
-    cscope -bkqU
+	# echo "Updating cscope database ..."
+	# cscope -bkqU
+	if [ -e GTAGS -a -e GRTAGS -a -e GPATH ]
+	then
+		echo "Updating GNU Global database ..."
+		global -u
+	else
+		echo "Creating GNU Global database ..."
+		gtags --skip-unreadable
+	fi
 }
 
 mklist()
 {
 	echo "Generating file list ..."
-	#find -L . \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) -type f -fprintf cscope.files "\"%p\"\n"
-	find -H . \( -name "*.[chS]" -o -name "*.cpp" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) \( ! -type l -a -type f \) -fprintf cscope.files "\"%p\"\n"
+	# find -L . \( -name "*.[chS]" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) -type f -fprintf cscope.files "\"%p\"\n"
+	# find -H . \( -name "*.[chS]" -o -name "*.cpp" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) \( ! -type l -a -type f \) -fprintf cscope.files "\"%p\"\n"
+	find -H . \( -name "*.[chS]" -o -name "*.cpp" -o -name "*.in[cl]" -o -name "*.ldi" -o -name "*.ld" -o -name "*.hxx" -o -name [Mm]akefile -o -name config \) \( ! -type l -a -type f \) -fprintf gtags.files "%p\n"
 
 	if [ -e arch/arm -a -e Kconfig -a kernel/fork.c ]
 	then
 		echo "    Linux kernel source. Removing directories except arch/arm"
 		for i in alpha arc arm64 avr32 blackfin c6x cris frv h8300 hexagon ia64 m32r m68k metag microblaze mips mn10300 openrisc parisc powerpc s390 score sh sparc tile um unicore32 x86 xtensa
 		do
-			grep -v /arch/$i/ cscope.files > qq
-			\mv qq cscope.files
+			grep -v /arch/$i/ gtags.files > qq
+			\mv qq gtags.files
 		done
 	fi
 
@@ -41,8 +50,8 @@ mklist()
 
 	# for i in `cat qq`
 	# do
-	# 	grep -v $i cscope.files > zz
-	# 	\mv zz cscope.files
+	# 	grep -v $i gtags.files > zz
+	# 	\mv zz gtags.files
 	# done && \rm qq
 
 	csup
@@ -56,7 +65,7 @@ csmk()
 
 csrm()
 {
-    \rm -f cscope.files cscope.in.out cscope.out cscope.po.out
+    \rm -f gtags.files GTAGS GRTAGS GPATH
 }
 
 workenv()
